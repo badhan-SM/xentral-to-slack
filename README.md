@@ -268,15 +268,27 @@ Simply update your current Cloud Run service with production settings:
 
 ```bash
 gcloud run services update xentral-to-slack \
-  --update-env-vars XENTRAL_API_TOKEN='YOUR_PRODUCTION_API_TOKEN' \
-  --update-env-vars XENTRAL_CUSTOMER_URL_TEMPLATE='https://YOUR_PRODUCTION_DOMAIN.xentral.biz/api/v1/adressen/{id}' \
+  --update-env-vars XENTRAL_API_TOKEN='1|a8ycB86BvTd9VxBQgpr1Pus6airlwwGPiJbrJwt1' \
+  --update-env-vars XENTRAL_CUSTOMER_URL_TEMPLATE='https://6729fcfb192f7.xentral.biz/api/v2/adressen/{id}' \
   --region europe-west1
 ```
 
 **Your webhook URL stays the same:**
 ```
-https://xentral-to-slack-XXXXXXXXX-ew.a.run.app/xentral
+https://xentral-to-slack-929394595049.europe-west1.run.app/xentral
 ```
+
+### Environment Configuration Reference
+
+**Current (Sandbox):**
+- Domain: `https://672b93b732f68.xentral.biz`
+- API Token: `1|PZm7Iimqh6xmxSqlLameOvXeQIHPIcVxI7ea2PtP`
+- API URL: `https://672b93b732f68.xentral.biz/api/v2/adressen/{id}`
+
+**Production:**
+- Domain: `https://6729fcfb192f7.xentral.biz`
+- API Token: `1|a8ycB86BvTd9VxBQgpr1Pus6airlwwGPiJbrJwt1`
+- API URL: `https://6729fcfb192f7.xentral.biz/api/v2/adressen/{id}`
 
 ### Option 2: Deploy Separate Production Service
 
@@ -291,8 +303,8 @@ gcloud run deploy xentral-to-slack-prod \
   --allow-unauthenticated \
   --port 8080 \
   --set-env-vars="SLACK_WEBHOOK_URL=YOUR_SLACK_URL" \
-  --set-env-vars="XENTRAL_API_TOKEN=PRODUCTION_TOKEN" \
-  --set-env-vars="XENTRAL_CUSTOMER_URL_TEMPLATE=https://PRODUCTION.xentral.biz/api/v1/adressen/{id}" \
+  --set-env-vars="XENTRAL_API_TOKEN=1|a8ycB86BvTd9VxBQgpr1Pus6airlwwGPiJbrJwt1" \
+  --set-env-vars="XENTRAL_CUSTOMER_URL_TEMPLATE=https://6729fcfb192f7.xentral.biz/api/v2/adressen/{id}" \
   --set-env-vars="NODE_ENV=production"
 ```
 
