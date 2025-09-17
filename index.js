@@ -131,11 +131,14 @@ async function getCustomerData(customerId) {
       const data = await resp.json();
       logger.info('Successfully fetched customer data', { customerId });
       
+      // Xentral API returns data in {data: {...}} format
+      const customerInfo = data?.data || data;
+      
       return {
-        name: data?.name || data?.firmenname || data?.fullname || data?.company || data?.adresse?.name || null,
-        email: data?.email || data?.adresse?.email || null,
-        phone: data?.telefon || data?.phone || data?.adresse?.telefon || null,
-        address: data?.adresse || null
+        name: customerInfo?.name || customerInfo?.firmenname || customerInfo?.fullname || customerInfo?.company || customerInfo?.adresse?.name || null,
+        email: customerInfo?.email || customerInfo?.adresse?.email || null,
+        phone: customerInfo?.telefon || customerInfo?.phone || customerInfo?.adresse?.telefon || null,
+        address: customerInfo?.adresse || null
       };
     });
   } catch (error) {
@@ -151,8 +154,16 @@ const eventHandlers = {
     const customerId = body?.customerId || body?.id || body?.adresseId || body?.addressId;
     const createdAt = body?.createdAt || body?.created_at || new Date().toISOString();
     
+    // Log the full webhook body to see what data Xentral sends
+    logger.info('Full webhook body from Xentral', { body: JSON.stringify(body, null, 2) });
+    
     // Get customer name from various possible fields
-    let customerName = body?.name || body?.customer?.name || body?.firmenname || body?.fullname || body?.company;
+    let customerName = body?.name || body?.customer?.name || body?.firmenname || body?.fullname || body?.company || body?.customerName;
+    
+    // Also check nested objects
+    if (!customerName && body?.data) {
+      customerName = body.data.name || body.data.customer?.name || body.data.firmenname;
+    }
     
     // If still no name and we have ID, try to get from API
     if (!customerName && customerId) {
@@ -163,7 +174,7 @@ const eventHandlers = {
     }
     
     return {
-      text: `New Customer Created${customerId ? ` #${customerId}` : ''}${customerName ? ` – ${customerName}` : ''}`,
+      text: `New Customer Created #${customerId}${customerName ? ` – ${customerName}` : ''}`,
       blocks: [
         { type: "header", text: { type: "plain_text", text: "New Customer Created" } },
         {
