@@ -1,0 +1,1 @@
+Run this command in your terminal: gcloud auth login
