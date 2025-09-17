@@ -2,16 +2,6 @@
 
 A robust Node.js service that receives webhooks from Xentral ERP and forwards formatted notifications to Slack channels.
 
-## Features
-
-- 🔐 **Secure**: Rate limiting, input validation, and security headers
-- 🔄 **Reliable**: Automatic retry logic with exponential backoff
-- 📊 **Comprehensive Logging**: Structured logging with Winston
-- 🎯 **Multiple Event Types**: Support for customers, orders, invoices, and payments
-- ⚡ **Fast**: Optimized for high-throughput webhook processing
-- 🛠️ **Developer Friendly**: Test endpoints and detailed error messages
-- 📈 **Production Ready**: Health checks, graceful shutdown, and monitoring
-
 ## Supported Event Types
 
 | Event Type | Description | Slack Message |
